@@ -50,8 +50,15 @@ bool firstMouse = true;
 glm::mat4 view = glm::mat4(1.0f);
 glm::mat4 projection = glm::mat4(1.0f);
 
+//initial velocity
+glm::vec3 u = glm::vec3(0.0f, 0.0f, 0.0f);
+
 // time
 GLfloat deltaTime = 0.0f;
+
+//acceleration
+const glm::vec3 a = glm::vec3(0.0f,-9.81f, 0.0f);
+
 
 
 // window
@@ -203,7 +210,7 @@ int main(int argc, const char** argv)
 	ground.SetShader(&defaultShader);
 
 	particle.SetColor(glm::vec4(1, 0, 0, 1)); // set red color
-	particle.Translate(glm::vec3(0.0f, 5.0f, 0.0f)); // move up a bit
+	particle.Translate(glm::vec3(0.0f, 20.0f, 0.0f)); // move up a bit
 	//particle.Scale(glm::vec3(.1f, .1f, .1f)); // shrink it to 10% of original
 	//particle.Rotate((GLfloat) M_PI_2, glm::vec3(1.0f, 0.0f, 0.0f)); // rotate by 90 degrees around X axis
 
@@ -213,7 +220,7 @@ int main(int argc, const char** argv)
 
 	GLfloat timeStart = (GLfloat)glfwGetTime();
 	GLfloat lastFrameTimeSinceStart = timeStart;
-	const float ANIMATION_SPEED = 11.0f; // increase this if you want time to move faster
+	const float ANIMATION_SPEED = 1.0f; // increase this if you want time to move faster
 	// Game loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -248,7 +255,10 @@ int main(int argc, const char** argv)
 
 
 		// 1 - make particle fall with accelerating speed using the .Translate method
-
+		glm::vec3 s = u * deltaTime + 0.5f * a * deltaTime * deltaTime;
+		particle.Translate(s);
+		
+		
 
 		// 2 - same as above using the .SetPosition method
 
@@ -260,7 +270,7 @@ int main(int argc, const char** argv)
 
 
 		// 5 - add collision with plane
-
+		
 
 		// 6 - Same as above but for a collection of particles
 
